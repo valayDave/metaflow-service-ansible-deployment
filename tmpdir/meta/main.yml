@@ -1,0 +1,27 @@
+## Metadata for the Ansible tmpdir role.
+##
+dependencies: []
+
+galaxy_info:
+  author: Michael Klatt
+  description: Create a temporary working directory.
+  version: 0.3.0
+  license: MIT
+  min_ansible_version: 2.6
+
+  # This list is not exhaustive, but the role has been tested with these
+  # platforms.
+  platforms:
+    - name: EL
+      versions:
+        - 6
+        - 7
+    - name: Ubuntu
+      versions:
+        - trusty  # 14.04
+        - xenial  # 16.04
+        - bionic  # 18.04
+
+  galaxy_tags:
+    - system
+    - utility

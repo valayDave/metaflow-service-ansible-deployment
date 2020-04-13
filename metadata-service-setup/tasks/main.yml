@@ -1,0 +1,21 @@
+- name: Clone the code repository to the docroot.
+  git:
+    repo: "https://github.com/Netflix/metaflow-service.git"
+    dest: "{{app_remote_folder}}"
+    update: yes
+    accept_hostkey: yes
+  become: no
+
+- name: Install Metadata Service Requirements
+  pip:
+    requirements: "{{app_remote_folder}}/metadata_service/requirements.txt"
+    virtualenv: "{{app_remote_folder}}/.env"
+    virtualenv_command: "{{py_command}} -m venv"
+
+
+- name: Basic Apt-Get for python install(This is for supervisor)
+  become: true
+  apt: 
+    name:
+        - python3-pip
+        - python-pip

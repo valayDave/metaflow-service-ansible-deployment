@@ -1,0 +1,11 @@
+## Default variables for the Ansible tmpdir role.
+##
+## These variables have the lowest priority and can be overriden at runtime.
+## The temporary directory is only created once per playbook, so modifying
+## these variables after that will have no effect. Other roles that use this
+## role cannot depend on being able to change these values.
+##
+tmpdir_root: "{{ ansible_env.TMPDIR|default('/tmp') }}"
+tmpdir_template: tmp.XXXXXXXX
+tmpdir_path: ""  # set at runtime
+tmpdir_force: false  # force removal as root

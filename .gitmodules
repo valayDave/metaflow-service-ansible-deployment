@@ -1,0 +1,6 @@
+[submodule "supervisor"]
+	path = supervisor
+	url = https://github.com/geerlingguy/ansible-role-supervisor
+[submodule "postgres-setup"]
+	path = postgres-setup
+	url = https://github.com/geerlingguy/ansible-role-postgresql.git

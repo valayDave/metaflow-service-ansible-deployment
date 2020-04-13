@@ -1,0 +1,16 @@
+## Handlers for the Ansible tmpdir role.
+##
+## These will be executed in the order listed below after all the normal tasks
+## in the play. Handlers have global scope, and should be named uniquely.
+##
+- name: tmpdir remove
+  become: "{{ tmpdir_force }}"
+  file:
+    path: "{{ tmpdir_path }}"
+    state: absent
+  notify:
+    - tmpdir unset
+
+- name: tmpdir unset
+  set_fact:
+    tmpdir_path: ""

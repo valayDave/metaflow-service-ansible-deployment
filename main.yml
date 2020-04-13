@@ -1,0 +1,24 @@
+- hosts: deploy-machine 
+  roles:
+    - tmpdir
+    - python_install
+    # - {role: postgres-setup, become: yes}
+    - metadata-service-setup
+    - {role: supervisor, become: yes}
+  vars:
+    python3_pyenv: "3.6.9"
+    set_installed_python_version_globally: true
+    app_remote_folder: "/home/ubuntu/metadata-service"
+    supervisor_programs:
+        - name: metaflow-metadata
+          state: present
+          command: "{{app_remote_folder}}/.env/bin/python -m metadata_service.server"
+          configuration: |
+            environment=MF_METADATA_DB_PSWD="{{MF_METADATA_DB_PSWD}}",MF_METADATA_DB_NAME="{{MF_METADATA_DB_NAME}}",MF_METADATA_DB_USER="{{MF_METADATA_DB_USER}}",PYTHONPATH="{{app_remote_folder}}",PATH="{{app_remote_folder}}/.env/bin:{{app_remote_folder}}:{{ ansible_env.PATH }}"
+            autostart=true
+            autorestart=true
+            startretries=1
+            startsecs=1
+            numprocesses=1
+  vars_files: 
+    - Secrets/var.yml
