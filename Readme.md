@@ -3,8 +3,8 @@
 Setup Entails : 
 
 1. Metadata service setup
-    1. NGINX Auth over the service. (TODO)
-    2. Service Setup with Python
+    1. Service Setup with Python
+    2. NGINX Auth over the service. 
 2. Metadata Postgres setup
 
 
