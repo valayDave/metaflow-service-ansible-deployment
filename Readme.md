@@ -33,8 +33,50 @@ Setup Entails :
     ansible_python_interpreter=/usr/bin/python3
     ```
 
-3. Run Command to Deploy.
+4. Run Command to Deploy.
     ```
     ansible-playbook -i hosts main.yml
     ```
+5. [Setup SSL NGINX Certs using Cerbot](https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx) and route domain use Route53. SSL Setup uses [LetsEncrypt CA](https://letsencrypt.org/getting-started/). This will even setup domain on NGINX.
+
+6. [Add Authentation/Users to route using `htpasswd`](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/). 
+
+7. Add Redirect to metadata service and `htpasswd` location to NGINX site-enabled at `/etc/nginx/sites-enabled/default`. For template `/etc/nginx/sites-enabled/default` check [nginx.conf](nginx.conf)
+    ```conf
+            location / {
+
+                    auth_basic "Admin Users Only Area";
+                    # This will hold users added by `htpasswd`
+                    auth_basic_user_file /etc/nginx/users/.htpasswd;
+                    
+                    # METAFLOW REDIRECT
+                    proxy_pass http://127.0.0.1:8080/;
+                
+                    # Redefine the header fields that NGINX sends to the upstream server
+                    proxy_set_header Host $host;
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                
+                    # Define the maximum file size on file uploads
+                    client_max_body_size 5M;
+            }
+    ```
+
+8. Final Metaflow config Looks like : 
+    ```json
+    {   
+        
+        "METADATA_SERVICE_URL":"https://patentwerx.isdatatower.com/",
+        "METADATA_SERVICE_HEADERS":"{\"Authorization\": \"Basic <BASE_64_OF(usename:password)>\"}",
+        "METAFLOW_DATASTORE_SYSROOT_S3":"s3://metaflow-machine-learning-staging/metaflow_store",
+        "METAFLOW_DATATOOLS_SYSROOT_S3":"s3://metaflow-machine-learning-staging/metaflow_store/data",
+        "METAFLOW_ECS_S3_ACCESS_IAM_ROLE":"<ROLE_ARN>",
+        "METAFLOW_DEFAULT_DATASTORE": "s3",
+        "METAFLOW_DEFAULT_METADATA": "service",
+        "METAFLOW_BATCH_JOB_QUEUE":"<BATCH_JOBQ_ARN>"
+    }
+    ```
+9. For Batch specification check metaflow website. 
+
+
 
