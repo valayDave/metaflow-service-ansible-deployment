@@ -2,7 +2,7 @@
   roles:
     - tmpdir
     - python_install
-    # - {role: postgres-setup, become: yes}
+    - {role: postgres-setup, become: yes}
     - metadata-service-setup
     - {role: supervisor, become: yes}
   vars:

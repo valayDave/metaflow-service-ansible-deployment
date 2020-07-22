@@ -9,7 +9,7 @@ Setup Entails :
 
 
 ## Setup Details 
-1. Setup Secrets in Secrets/var.yml
+1. Setup Secrets in `Secrets/var.yml`
     ```yaml
 
     MF_METADATA_DB_USER: username
@@ -39,9 +39,10 @@ Setup Entails :
     ```
 5. [Setup SSL NGINX Certs using Cerbot](https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx) and route domain use Route53. SSL Setup uses [LetsEncrypt CA](https://letsencrypt.org/getting-started/). This will even setup domain on NGINX.
 
-6. [Add Authentation/Users to route using `htpasswd`](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/). 
+6. [Add Authentation/Users to route using `htpasswd`](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/). : `sudo htpasswd -c /etc/nginx/users/.htpasswd`
+ 
 
-7. Add Redirect to metadata service and `htpasswd` location to NGINX site-enabled at `/etc/nginx/sites-enabled/default`. For template `/etc/nginx/sites-enabled/default` check [nginx.conf](nginx.conf)
+7. Add Redirect to metadata service and `htpasswd` location to NGINX site-enabled at `/etc/nginx/sites-enabled/default`.
     ```conf
             location / {
 
@@ -66,10 +67,10 @@ Setup Entails :
     ```json
     {   
         
-        "METADATA_SERVICE_URL":"https://patentwerx.isdatatower.com/",
+        "METADATA_SERVICE_URL":"<URL>",
         "METADATA_SERVICE_HEADERS":"{\"Authorization\": \"Basic <BASE_64_OF(usename:password)>\"}",
-        "METAFLOW_DATASTORE_SYSROOT_S3":"s3://metaflow-machine-learning-staging/metaflow_store",
-        "METAFLOW_DATATOOLS_SYSROOT_S3":"s3://metaflow-machine-learning-staging/metaflow_store/data",
+        "METAFLOW_DATASTORE_SYSROOT_S3":"s3://<bucket_path>",
+        "METAFLOW_DATATOOLS_SYSROOT_S3":"s3://<bucket_path>",
         "METAFLOW_ECS_S3_ACCESS_IAM_ROLE":"<ROLE_ARN>",
         "METAFLOW_DEFAULT_DATASTORE": "s3",
         "METAFLOW_DEFAULT_METADATA": "service",
@@ -77,6 +78,5 @@ Setup Entails :
     }
     ```
 9. For Batch specification check metaflow website. 
-
 
 
